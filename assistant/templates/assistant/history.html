@@ -1,0 +1,90 @@
+{% extends 'assistant/base.html' %}
+{% load static %}
+
+{% block title %}Study History — StudyAI{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+  <h1>Study <span>History</span></h1>
+  <p>Your recent study sessions are stored temporarily in this browser.</p>
+</div>
+
+<div class="container">
+
+  {% if history %}
+
+  <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+    <form action="{% url 'clear_history' %}" method="POST" onsubmit="return confirm('Clear all study history?')">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger" style="font-size: 0.8rem; padding: 8px 18px;">Clear All</button>
+    </form>
+  </div>
+
+  {% for item in history %}
+<details class="card" style="margin-bottom: 16px; cursor: pointer;">
+  <summary style="display: flex; align-items: center; justify-content: space-between; list-style: none; cursor: pointer; gap: 16px;">
+    <div>
+      <div class="history-topic">{{ item.topic|truncatechars:70 }}</div>
+      <div class="history-meta" style="margin-top: 4px;">
+        {{ item.timestamp }}
+        &nbsp;·&nbsp;
+        <span class="badge badge-{{ item.difficulty }}">{{ item.difficulty }}</span>
+        &nbsp;·&nbsp;
+        {{ item.flashcards|length }} flashcards
+      </div>
+    </div>
+    <div style="display: flex; gap: 8px; align-items: center;">
+      {% if item.id %}
+      <form action="{% url 'delete_history_item' item.id %}" method="POST"
+        onsubmit="event.stopPropagation(); return confirm('Delete this session?')">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger"
+          style="font-size: 0.72rem; padding: 5px 12px;">Delete</button>
+      </form>
+      {% endif %}
+     
+  </summary>
+
+  <div style="margin-top: 24px;">
+    <div class="section-heading">Study Reviewer</div>
+    <div class="reviewer-content" style="margin-bottom: 28px;">{{ item.reviewer }}</div>
+    {% if item.flashcards %}
+    <div class="section-heading">Flashcards</div>
+    <div class="flashcard-grid">
+      {% for card in item.flashcards %}
+      <div class="flashcard">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            <div class="flashcard-num">Card {{ card.num }}</div>
+            <div class="flashcard-q">{{ card.q }}</div>
+            <div class="flashcard-hint">Tap to flip</div>
+          </div>
+          <div class="flashcard-back">
+            <div class="flashcard-a-label">Answer</div>
+            <div class="flashcard-a">{{ card.a }}</div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</details>
+{% endfor %}
+
+  {% else %}
+
+  <div class="empty-state">
+    <div style="font-family: 'Syne', sans-serif; font-size: 2rem; color: var(--text-muted);">—</div>
+    <p>No study sessions yet. Start by generating a study reviewer on the home page.</p>
+    <div class="mt-16">
+      <a href="{% url 'index' %}" class="btn btn-primary">Start Studying</a>
+    </div>
+  </div>
+
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

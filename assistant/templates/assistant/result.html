@@ -1,0 +1,87 @@
+{% extends 'assistant/base.html' %}
+{% load static %}
+
+{% block title %}Study Results — StudyAI{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 40px; padding-bottom: 60px;">
+
+  <!-- RESULT HEADER -->
+  <div class="result-header">
+    <div>
+      <div class="result-title">Study Materials Ready</div>
+      {% if topic %}
+      <div style="color: var(--text-secondary); font-size: 0.82rem; margin-top: 4px; letter-spacing: 0.04em;">
+        {{ topic|truncatechars:80 }}
+      </div>
+      {% endif %}
+    </div>
+    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+      {% if difficulty %}
+      <span class="badge badge-{{ difficulty }}">{{ difficulty }}</span>
+      {% endif %}
+      <a href="{% url 'index' %}" class="btn btn-outline" style="padding: 8px 18px; font-size: 0.8rem;">New Study</a>
+    </div>
+  </div>
+
+  {% if error %}
+  <!-- ERROR -->
+  <div class="alert-error">
+    <strong>Oops!</strong> {{ error }}
+  </div>
+  <div class="mt-16">
+    <a href="{% url 'index' %}" class="btn btn-primary">Try Again</a>
+  </div>
+
+  {% else %}
+
+  <!-- STUDY REVIEWER -->
+  <div class="card">
+    <div class="section-heading">Study Reviewer</div>
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+      <button id="copy-btn" onclick="copyReviewer()" class="btn btn-outline" style="padding: 6px 16px; font-size: 0.75rem;">Copy Text</button>
+    </div>
+    <div id="reviewer-text" class="reviewer-content">{{ reviewer }}</div>
+  </div>
+
+  <!-- FLASHCARDS -->
+  {% if flashcards %}
+  <div class="card">
+    <div class="section-heading">Flashcard Quiz</div>
+    <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+      <button onclick="revealAll()" class="btn btn-outline" style="padding: 7px 16px; font-size: 0.78rem;">Reveal All</button>
+      <button onclick="resetAll()" class="btn btn-outline" style="padding: 7px 16px; font-size: 0.78rem;">Reset All</button>
+    </div>
+    <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 20px;">Click any card to flip it and see the answer.</p>
+
+    <div class="flashcard-grid">
+      {% for card in flashcards %}
+      <div class="flashcard">
+        <div class="flashcard-inner">
+          <!-- FRONT -->
+          <div class="flashcard-front">
+            <div class="flashcard-num">Card {{ card.num }}</div>
+            <div class="flashcard-q">{{ card.q }}</div>
+            <div class="flashcard-hint">Tap to flip</div>
+          </div>
+          <!-- BACK -->
+          <div class="flashcard-back">
+            <div class="flashcard-a-label">Answer</div>
+            <div class="flashcard-a">{{ card.a }}</div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- ACTION ROW -->
+  <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+    <a href="{% url 'index' %}" class="btn btn-primary">Study Something Else</a>
+    <a href="{% url 'history' %}" class="btn btn-outline">View History</a>
+  </div>
+
+  {% endif %}
+</div>
+{% endblock %}

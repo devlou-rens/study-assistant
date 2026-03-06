@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Your Free AI Study Assistant{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'assistant/css/style.css' %}" />
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="{% url 'index' %}" class="nav-logo">AI-Reviewer</a>
+      <div class="nav-links">
+        <a href="{% url 'index' %}" {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>New Study</a>
+        <a href="{% url 'history' %}" {% if request.resolver_match.url_name == 'history' %}class="active"{% endif %}>History</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LOADING OVERLAY -->
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text" id="loading-message">Hang tight! Almost there...</div>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    Free · No Login · No Ads — AI-ReviewerMaker helps students learn better<br>
+    Develop By: devlou-rens
+  </footer>
+
+  <script src="{% static 'assistant/js/app.js' %}"></script>
+  {% block scripts %}
+  <script>
+const messages = [
+  "Hang tight! Almost there...",
+  "Reading your content carefully...",
+  "Building your Study Reviewer...",
+  "Creating your Flashcards...",
+  "Making it easy to understand...",
+  "Almost done! Just a few more seconds...",
+  "Preparing your exam-ready materials...",
+  "You're going to ace this!",
+];
+
+let msgIndex = 0;
+function rotateMsgs() {
+  const el = document.getElementById('loading-message');
+  if (!el) return;
+  msgIndex = (msgIndex + 1) % messages.length;
+  el.style.opacity = '0';
+  setTimeout(() => {
+    el.textContent = messages[msgIndex];
+    el.style.opacity = '1';
+  }, 300);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const el = document.getElementById('loading-message');
+  if (el) {
+    el.style.transition = 'opacity 5.6s ease';
+  }
+});
+
+// Start rotating when loading overlay becomes active
+const observer = new MutationObserver(function(mutations) {
+  mutations.forEach(function(mutation) {
+    if (mutation.target.classList.contains('active')) {
+      msgIndex = 0;
+      setInterval(rotateMsgs, 2500);
+    }
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  const overlay = document.getElementById('loading-overlay');
+  if (overlay) {
+    observer.observe(overlay, { attributes: true, attributeFilter: ['class'] });
+  }
+});
+</script>
+  {% endblock %}
+</body>
+</html>

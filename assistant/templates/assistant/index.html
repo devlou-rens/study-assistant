@@ -1,0 +1,136 @@
+{% extends 'assistant/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-hero">
+  <h1>Your Free<br><span>AI Study Assistant</span></h1>
+  <p>Paste text, upload a PDF, Word doc, or image — get a study reviewer + flashcard quiz instantly.</p>
+</div>
+
+<div class="container">
+  <form id="study-form" action="{% url 'generate' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" id="input_type" name="input_type" value="text" />
+
+    <div class="card">
+      <div class="card-title">Content to Study</div>
+
+      <div class="input-tabs">
+        <button type="button" class="input-tab active" data-tab="text" onclick="switchTab('text')">Text</button>
+        <button type="button" class="input-tab" data-tab="pdf" onclick="switchTab('pdf')">PDF</button>
+        <button type="button" class="input-tab" data-tab="document" onclick="switchTab('document')">Word Doc</button>
+      </div>
+
+      <!-- TEXT PANEL -->
+      <div data-panel="text">
+        <div class="form-group">
+          <label class="form-label" for="text_content">Paste your notes, topic, or content below</label>
+          <textarea class="form-control" id="text_content" name="text_content"
+            placeholder="Example: Photosynthesis is the process by which green plants use sunlight to make food from carbon dioxide and water..."></textarea>
+        </div>
+        <div class="card">
+      <div class="card-title">Settings</div>
+      <div class="form-group">
+        <label class="form-label" for="difficulty">Difficulty Level</label>
+        <select class="form-control" id="difficulty" name="difficulty">
+          <option value="easy">Easy — Basic definitions, simple explanations</option>
+          <option value="medium" selected>Medium — Explanations with examples</option>
+          <option value="hard">Hard — Deep analysis, technical depth</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full">Generate Study Materials</button>
+    </div>
+      </div>
+
+
+      <!-- PDF PANEL -->
+      <div data-panel="pdf" class="hidden">
+        <div class="form-group">
+          <label class="form-label">Upload a PDF file</label>
+          <div class="file-drop" data-drop="pdf">
+            <input type="file" id="file-pdf" name="file" accept=".pdf" />
+            <div class="file-drop-icon">PDF</div>
+            <p><strong>Click to upload</strong> or drag and drop</p>
+            <div class="file-name" id="file-name-pdf"></div>
+          </div>
+           <div class="card">
+      <div class="card-title">Settings</div>
+      <div class="form-group">
+        <label class="form-label" for="difficulty">Difficulty Level</label>
+        <select class="form-control" id="difficulty" name="difficulty">
+          <option value="easy">Easy — Basic definitions, simple explanations</option>
+          <option value="medium" selected>Medium — Explanations with examples</option>
+          <option value="hard">Hard — Deep analysis, technical depth</option>
+        </select>
+        <br>
+        <div class="form-group">
+          <label class="form-label">Extra Instructions
+            <span style="color: var(--text-muted); font-size: 0.72rem; text-transform: none; letter-spacing: 0; font-weight: 400;">(optional)</span>
+          </label>
+          <textarea class="form-control" name="extra_instructions"
+            style="min-height: 80px; resize: vertical;"
+            placeholder="Example: Focus on key terms only. Explain like I am 10 years old. Summarize only chapter 2..."></textarea>
+        </div>
+      </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full">Generate Study Materials</button>
+    </div>
+  </form>
+        </div>
+
+      <!-- WORD DOC PANEL -->
+      <div data-panel="document" class="hidden">
+        <div class="form-group">
+          <label class="form-label">Upload a Word document</label>
+          <div class="file-drop" data-drop="document">
+            <input type="file" id="file-document" name="file" accept=".docx,.doc" />
+            <div class="file-drop-icon">DOC</div>
+            <p><strong>Click to upload</strong> or drag and drop</p>
+            <div class="file-name" id="file-name-document"></div>
+          </div>
+           <div class="card">
+      <div class="card-title">Settings</div>
+      <div class="form-group">
+        <label class="form-label" for="difficulty">Difficulty Level</label>
+        <select class="form-control" id="difficulty" name="difficulty">
+          <option value="easy">Easy — Basic definitions, simple explanations</option>
+          <option value="medium" selected>Medium — Explanations with examples</option>
+          <option value="hard">Hard — Deep analysis, technical depth</option>
+        </select>
+        <br>
+        <div class="form-group">
+          <label class="form-label">Extra Instructions
+            <span style="color: var(--text-muted); font-size: 0.72rem; text-transform: none; letter-spacing: 0; font-weight: 400;">(optional)</span>
+          </label>
+          <textarea class="form-control" name="extra_instructions"
+            style="min-height: 80px; resize: vertical;"
+            placeholder="Example: Focus on key terms only. Explain like I am 10 years old. Summarize only chapter 2..."></textarea>
+        </div>
+      </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full">Generate Study Materials</button>
+    </div>
+  </form>
+        </div>
+
+
+  {% if history %}
+  <div class="card mt-16">
+    <div class="card-title">Recent Sessions</div>
+    {% for item in history|slice:":3" %}
+    <div class="history-item">
+      <div>
+        <div class="history-topic">{{ item.topic|truncatechars:60 }}</div>
+        <div class="history-meta">{{ item.timestamp }} &nbsp;·&nbsp;
+          <span class="badge badge-{{ item.difficulty }}">{{ item.difficulty }}</span>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    <div class="mt-16">
+      <a href="{% url 'history' %}" class="btn btn-outline">View All History</a>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
