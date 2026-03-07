@@ -14,7 +14,7 @@ function switchTab(type) {
   if (fileName) fileName.textContent = '';
 }
 
-// ── FILE DROP ────────────────────────────────────────────────
+// ── FILE DROP ──────────────
 function initFileDrop() {
   const drop = document.querySelector('.file-drop');
   if (!drop) return;
