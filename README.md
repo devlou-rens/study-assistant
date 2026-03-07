@@ -3,6 +3,7 @@
 ## Project Overview
 
 AI Reviewer (Agents) is a free web application that converts study materials such as notes, PDFs, and Word documents into structured study reviewers and flashcard quizzes using AI.
+
 The application helps students quickly understand complex topics by generating summaries, explanations, examples, and review questions automatically.
 
 ## Project Structure
