@@ -169,7 +169,7 @@ Activate the virtual environment before running the server.
 **File Upload Errors**
 
 Check that the file type is supported and the file size does not exceed the allowed limit.
-
+ 
 ## Acknowledgments
 
 * OpenRouter for providing access to AI models.
