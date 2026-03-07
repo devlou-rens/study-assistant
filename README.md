@@ -43,8 +43,8 @@ study-assistant/
 1. **Clone the Repository**
 
 ```bash
-git clone https://github.com/yourusername/study-assistant.git
-cd ai-reviewer
+git clone https://github.com/devlou-rens/study-assistant.git
+cd study-assistant
 ```
 
 2. **Create a Virtual Environment**
