@@ -76,7 +76,7 @@ pip install -r requirements.txt
 Main dependencies include:
 
 * Django
-* anthropic
+* pdfplumber
 * python-docx
 * Pillow
 
