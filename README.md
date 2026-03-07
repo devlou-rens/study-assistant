@@ -9,11 +9,11 @@ The application helps students quickly understand complex topics by generating s
 ## Project Structure
 
 ```
-study_assistant/
+study-assistant/
 │
 ├── manage.py
 ├── requirements.txt
-├── study_assistant/
+├── study-assistant/
 │   ├── __init__.py
 │   ├── settings.py
 │   ├── urls.py
