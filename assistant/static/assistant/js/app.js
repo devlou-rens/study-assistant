@@ -7,14 +7,12 @@ function switchTab(type) {
   document.querySelector(`[data-panel="${type}"]`).classList.remove('hidden');
   document.getElementById('input_type').value = type;
 
-
   // Reset file input
   const fileInput = document.getElementById('file');
   if (fileInput) fileInput.value = '';
   const fileName = document.getElementById('file-name');
   if (fileName) fileName.textContent = '';
 }
-
 
 // ── FILE DROP ────────────────────────────────────────────────
 function initFileDrop() {
@@ -41,7 +39,6 @@ function initFileDrop() {
     });
   });
 }
-
 
 // ── FORM SUBMIT / LOADING ─────────────────────────────────────
 function initForm() {
