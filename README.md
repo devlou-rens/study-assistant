@@ -43,7 +43,7 @@ study-assistant/
 1. **Clone the Repository**
 
 ```bash
-git clone https://github.com/yourusername/ai-assistant.git
+git clone https://github.com/yourusername/study-assistant.git
 cd ai-reviewer
 ```
 
