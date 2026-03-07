@@ -9,7 +9,7 @@ The application helps students quickly understand complex topics by generating s
 ## Project Structure
 
 ```
-study_assistant/
+study-assistant/
 │
 ├── manage.py
 ├── requirements.txt
@@ -43,7 +43,7 @@ study_assistant/
 1. **Clone the Repository**
 
 ```bash
-git clone https://github.com/yourusername/ai-reviewer.git
+git clone https://github.com/yourusername/ai-assistant.git
 cd ai-reviewer
 ```
 
